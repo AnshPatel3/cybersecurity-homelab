@@ -1,0 +1,86 @@
+<!-- 
+  Wazuh Custom Detection Rules
+  File: /var/ossec/etc/rules/local_rules.xml
+  
+  All 5 custom rules for Phase 1 of the CyberLab project.
+  After editing, restart wazuh-manager:
+    sudo systemctl restart wazuh-manager
+  
+  Verify no parse errors:
+    sudo grep -i error /var/ossec/logs/ossec.log | tail -5
+-->
+
+<group name="lab_custom,">
+
+  <!-- 
+    Rule 100001: RDP Brute Force
+    Fires when 5+ failed RDP logins occur from the same source IP
+    MITRE ATT&CK: T1110.001 - Brute Force: Password Guessing
+  -->
+  <rule id="100001" level="12">
+    <if_matched_sid>60122</if_matched_sid>
+    <same_source_ip />
+    <description>RDP brute force: 5+ failed logins from same source IP</description>
+    <mitre>
+      <id>T1110.001</id>
+    </mitre>
+  </rule>
+
+  <!-- 
+    Rule 100002: User Added to Local Administrators
+    Fires on Windows Event ID 4732 targeting the Administrators group
+    MITRE ATT&CK: T1136.001 - Create Account: Local Account
+  -->
+  <rule id="100002" level="14">
+    <if_sid>18141</if_sid>
+    <field name="data.win.system.eventID">^4732$</field>
+    <field name="data.win.eventdata.targetUserName">(?i)administrators</field>
+    <description>User added to local Administrators group</description>
+    <mitre>
+      <id>T1136.001</id>
+    </mitre>
+  </rule>
+
+  <!-- 
+    Rule 100003: PowerShell Encoded Command
+    Fires on Sysmon process creation with -enc or -EncodedCommand flags
+    MITRE ATT&CK: T1059.001 - Command and Scripting Interpreter: PowerShell
+  -->
+  <rule id="100003" level="13">
+    <if_sid>61603</if_sid>
+    <field name="data.win.eventdata.commandLine" type="pcre2">(?i)(-enc|-EncodedCommand)</field>
+    <description>Sysmon: PowerShell encoded command detected</description>
+    <mitre>
+      <id>T1059.001</id>
+    </mitre>
+  </rule>
+
+  <!-- 
+    Rule 100004: Suricata High-Severity Alert
+    Fires on Suricata alerts with severity 1 (critical) or 2 (high)
+    MITRE ATT&CK: T1046 - Network Service Discovery
+  -->
+  <rule id="100004" level="14">
+    <if_sid>86601</if_sid>
+    <field name="data.alert.severity">^1$|^2$</field>
+    <description>Suricata high-severity IDS alert (severity 1 or 2)</description>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+  </rule>
+
+  <!-- 
+    Rule 100005: New Service Installed
+    Fires on Windows Event ID 7045 (new service installed in the system)
+    MITRE ATT&CK: T1543.003 - Create or Modify System Process: Windows Service
+  -->
+  <rule id="100005" level="11">
+    <if_sid>18145</if_sid>
+    <field name="data.win.system.eventID">^7045$</field>
+    <description>New service installed on Windows endpoint</description>
+    <mitre>
+      <id>T1543.003</id>
+    </mitre>
+  </rule>
+
+</group>
