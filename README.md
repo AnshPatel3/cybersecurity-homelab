@@ -28,9 +28,9 @@
 | | Name | Role | Node |
 |---|---|---|---|
 | 🧠 | **Ansh Patel** | Project Lead · SOC Architect · Primary Builder | Node 1 & 2 (Home) |
-| 🤝 | **Jeenitesh Nandwani** | Infrastructure Partner · Node 3 Host | Node 3 (Remote) |
+| 🔧 | **Jeenitesh Nandwani** | Co-Builder · Infrastructure Partner · Node 3 Host | Node 3 (Remote) |
 
-> **Jeenitesh** is hosting Node 3 at his house, providing the offsite infrastructure that makes this a genuinely distributed, real-world SOC topology. Node 3 runs the Proxmox Backup Server and remote sensor — accessible by Ansh exclusively via Tailscale.
+> **Jeenitesh** is an active co-builder on this project — contributing to planning, setup decisions, and hands-on work — as well as hosting Node 3 at his house. His machine provides the offsite infrastructure that makes this a genuinely distributed, real-world SOC topology: Proxmox Backup Server, remote sensor, and anything else that gets built on Node 3. Ansh manages Node 3 remotely via Tailscale; Jeenitesh is the boots-on-the-ground when physical access is needed.
 
 ---
 
